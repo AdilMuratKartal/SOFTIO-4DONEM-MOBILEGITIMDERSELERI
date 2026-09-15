@@ -8,6 +8,7 @@ import 'dart:isolate';
 ///5-SiparisYoneticisi içerisinde direk çağırdın sql vs sınıfları bir arayüz dfen gelme direk somut olduğu için
 ///yani new diyerek oluşturuluyor sonra sen farklı tür bir sql yada sms , mail sağlayıcısı sağladığında ne olacak
 ///çalışan kod içine dokunmak zorunda kalırız
+///EKLEME
 
 
 class Urun {
