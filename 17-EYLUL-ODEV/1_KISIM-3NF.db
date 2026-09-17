@@ -1,0 +1,45 @@
+--DERSTE AYNISINI YAPTIK ORDAN ALDIM
+--DDL SORGULARI İÇİN SADECE CREATE YAPTIM
+--3NF TEKİ A B C İLİŞKİSİNİ(A->B->C, A C'ye direk erişemez, dolaylı erişir b üzerinden) A:students B:courses C:departments
+-- 1. Öğrenci Tablosu
+CREATE TABLE IF NOT EXISTS students (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_number TEXT UNIQUE NOT NULL,
+    full_name TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Bölümler Tablosu
+CREATE TABLE IF NOT EXISTS departments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE -- Bölüm isimleri tekrar etmesin diye UNIQUE eklendi
+);
+
+-- 3. Dersler Tablosu
+CREATE TABLE IF NOT EXISTS courses (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    department_id INTEGER NOT NULL,
+    courses_code TEXT UNIQUE NOT NULL, 
+    title TEXT NOT NULL,
+    credit INTEGER NOT NULL CHECK(credit > 0)
+    FOREIGN KEY (department_id) REFERENCES departments(id)
+);
+
+--PIVOT TABLO KOPRU GOREVI GORCEK
+4.Kayıtlar
+CREATE TABLE IF NOT EXISTS enrollments(
+    student_id INTEGER NOT NULL,
+    course_id INTEGER NOT NULL,
+    enrollment_code DATETIME DEFAULT CURRENT_TIMESTAMP,
+    final_grade INTEGER CHECK(final_grade BETWEEN 0 AND 100),
+    PRIMARY KEY(student_id,course_id),//BIRINCIL ANAHTAR AYNI DERSE İKİ KEZ 
+    FOREIGN KEY(student_id) REFERENCES students(id) ON DELETE CASCADE,
+    FOREIGN KEY(course_id) REFERENCES courses(id) ON DELETE RESTRICT
+)
+
+--enrollments tablomuzdaki final_grade sütunun ismini FİNAL_GRADE'e donusturduk artik diger sorgularda FİNAL_GRADE yazmaliyiz
+ALTER TABLE enrollments
+RENAME COLUMN final_grade TO FİNAL_GRADE
+
+--DROP TABLE komutu ile de tablomuzu kaldirmis oluyoruz
+DROP TABLE IF EXISTS enrollments
