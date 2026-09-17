@@ -1,0 +1,45 @@
+PRAGMA forein_keys=ON;
+
+
+CREATE TABLE IF NOT EXISTS students{
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_number TEXT UNIQUE NOT NULL,
+    full_name TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+};
+
+CREATE TABLE IF NOT EXISTS courses{
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    courses_code TEXT UNIQUE NOT NULL, ---- ORNK:MOB001
+    title TEXT NOT NULL,
+    credit INTEGER NOT NULL CHECK(credit>0)
+};
+
+--PIVOT TABLO KOPRU GOREVI GORCEK
+CREATE TABLE IF NOT EXISTS enrollments{
+    student_id INTEGER NOT NULL,
+    course_id INTEGER NOT NULL,
+    enrollment_code DATETIME DEFAULT CURRENT_TIMESTAMP,
+    final_grade INTEGER CHECK(final_grade BETWEEN 0 AND 100),
+    PRIMARY KEY(student_id,course_id),//BIRINCIL ANAHTAR AYNI DERSE İKİ KEZ 
+    FOREIGN KEY(student_id) REFERENCES students(id) ON DELETE CASCADE,
+    FOREIGN KEY(course_id) REFERENCES courses(id) ON DELETE RESTRICT
+}
+
+INSERT INTO students(student_number, full_name) VALUES('ORG001','Abdullah Belli'),
+('ORG002','Alaaddin Odabası');
+INSERT INTO courses(courses_code,title,credit) VALUES('MOB101','Flutter Dersi',4);
+
+INSERT INTO enrollments(student_id,courses_id,final_grade) VALUES(1,1,85);
+
+---Test1 Kursu Silmeye Calisalim
+DELETE FROM courses WHERE id=1;
+---ÇIKTI: ERROR:FOREIGN KEY constraint failde!(kurs silinemez cunku kayıtlı ogrenci var)ON DELETE RESTRICT yaptigimiz icin
+
+---TEST 2 OGRENCI Silelim
+DELETE FROM students WHERE id=1;
+---Ogrenci silindi  (DELETE CASCADE dediğimiz için öğrenci silinice enrollmentsdaki 1 idli olan öğrenciler siler)
+SELECT * FROM enrollments;
+---CIKTI: BOS (ogrenci silinince otomatik olarak kayit satirida silindi)
+---ARTIK enrollments SILINDIGI ICIN KURSTA SILINIRDI
+.DB_Store
