@@ -1,6 +1,6 @@
 ## **1\. SQL CRUD İşlemleri**
 
-**1.1** **CREATE/INSERT**
+**1.1** **CREATE/INSERT**  
 
 &nbsp;
 
