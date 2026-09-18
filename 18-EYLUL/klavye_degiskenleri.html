@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobil Klayve Değişkenleri</title>
+    <style>
+        body{
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
+        padding: 20px;
+        line-height: 1.5; 
+        background: #f8fafc; 
+        color: #0f172a;
+    }
+    .form-group{
+        margin-bottom: 16px;
+    }
+    label{
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+        font-size: 13px;
+    }
+    input{
+        width: 100%;
+        padding: 12px;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 15px;
+        box-sizing: border-box;
+    }
+    input:focus{
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+    .hint{
+        font-size: 11px;
+        color: #64748b;
+        margin-top: 4px;
+    }
+    </style>
+</head>
+<body>
+    <h3>Mobil Sanal Klayve Girişleri</h3>
+    <form id="mobileForm" autocomplete="on">
+        <!--id leri  for ile aynı yapıyoruzki label ile htmlde bu labelin buna ait olması gerektiği ortaya çıksın -->
+        <!--yoksa her bir next dediğinde farklı inputlara gidebilirsin -->
+        <div class="form-group">
+            <label for="txtName">Ad Soyad (Otomatik Büyük Harf)</label>
+            <input type="text" name="full_name" id="txtName"
+            placeholder="Selahaddin ÇİFTÇİ" autocomplete="name"
+            autocapitalize="words" enterkeyhint="next"><!-- enterkeyhint next ile enter'a basınca diğer inputa atar -->
+            <div class="hint">autocapitalize="words" her kelimenin ilk harfini büyük yapar</div>
+        </div>
+        <div class="form-group">
+            <label for="txtEmail">Eposta (düzeltme kapalı)</label>
+            <input type="email" name="email" id="txtEmail"
+            placeholder="selahaddin@kodadvance.com" autocomplete="email"
+            autocapitalize="none" enterkeyhint="next">
+            <div class="hint">@ ve .com tuşları eklenir</div>
+        </div>
+        <div class="form-group">
+            <label for="txtCard">Kredi kartı numarası(sayısal tuş takımı)</label>
+            <input type="text" id="txtCard" name="card_number"
+            placeholder="1234 5678 9012 3456"
+                autocomplete="cc-number" inputmode="numeric" maxlength="19"
+                enterkeyhint="next">
+            <div class="hint">inputmode="numeric" sayısal tuş takımı açar ok tuşları çıkmaz</div>
+        </div>
+        <div class="form-group">
+            <label for="txtAmount">Para transferi tutarı</label>
+            <input type="text" id="txtAmount" name="amount" 
+            placeholder="1.205,50" inputmode="decimal" enterkeyhint="next">
+            <div class="hint">Mobilde virgüllü noktalı ondalık sayı klavyesini açar</div>
+        </div>
+        <div class="form-group">
+            <label for="txtOtp">Sms Doğrulama Kodu</label>
+            <input type="text" name="otp" id="txtOtp"
+            placeholder="123456" inputmode="numeric" maxlength="6" autocomplete="one-time-code"
+            enterkeyhint="done">
+            <div class="hint">
+                Sms geldiğinde Klayvede kodu doldur önerisi çıkarır autocomplete="one-time-code"
+            </div>
+        </div>
+
+    </form>
+
+</body>
+</html>
