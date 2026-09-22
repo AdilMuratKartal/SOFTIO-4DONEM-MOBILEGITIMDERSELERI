@@ -1,0 +1,314 @@
+<!--
+1.Bir ürün veya hizmet için başlık, tanıtım videosu (<video playsinline>ve<İframe>) ekleyin.
+2.Ürünün stok durumunu gösteren bir <meter> etiketi koyun.
+3.Ürünle ilgili en az 2 maddelik açılır kapanır soru-cevap alanı (<details> ve <summary>) ekleyin.
+4."Detaylı Bilgi Al" butonu ile açılan bir <dialog> modal pop-up penceresi yerleştirin.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yalapşaps Universitesi</title>
+
+    <style>
+        
+        *{
+            margin-bottom: 10px;
+        }/*bunuda bütün elementlere bir boşluk bıraksınlar diye*/
+
+        .fullwidth{
+            width: 100%;
+        }
+
+        .boxshadow{
+            box-shadow: 0 2px 4px rgb(0, 0, 0, 0.5);
+        }
+
+        .disBlock{
+            display: block;
+        }
+        
+        body {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            background-color: rgba(255, 255, 255, 0.655);
+            color: black;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .container{
+            gap: 50px;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            background: rgba(247, 247, 247, 0.778);
+            border: 4px solid rgba(240, 240, 240, 0.861);
+            border-radius: 12px;
+        }
+
+        .player{
+            background-color: black;
+            
+        }
+
+        .video-container{
+            padding: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            object-fit: cover;
+        }
+
+        .hint{
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .btn{
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        .info-btn{
+            background-color: #64748b;
+            color: white;
+        }
+
+        .custom-controls{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: linear-gradient(transparent,rgba(0,0,0,0.85));
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            transition: opacity 0.3s ease;
+        }
+        .timeline-container{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            font-variant-numeric: tabular-nums;
+        }
+        .progress-bar{
+            flex: 1;
+            -webkit-appearance: none;
+            height: 5px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            cursor: pointer;
+        }
+        .progress-bar::-webkit-slider-thumb{
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #38bdf8;
+            cursor: pointer;
+        }
+        .button-group{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .left-controls,.right-controls{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .speed-badge{
+            background: #0284c7;
+            color: white;
+        }
+        
+
+    </style>
+
+</head>
+<body>
+    
+    <div class="container">
+        <!--video'lu hali-->
+        <h2>Tanıtım Videosu</h2>
+        <div class="player container fullwidth boxshadow">
+
+            <div class="video-container fullwidth">
+                <video id="myVideo" class="fullwidth" playsinline webkit-playsinline
+                preload="metadata">
+                <source src="https://assets.mixkit.co/videos/21595/21595-720.mp4" type="video/mp4">
+                WEBM DE bulamadım
+                </video>
+            </div>
+
+            <div class="custom-controls">
+            <!-- İlerleme Çubuğu ve Süre -->
+                <div class="timeline-container">
+                    <span id="currentTime">00:00</span>
+                    <input type="range" name="" id="progressBar"
+                    class="progress-bar" min="0" max="100" value="0">
+                    <span id="durationTime">00:00</span>
+                </div>
+
+                <div class="button-group">
+                    <div class="left-controls">
+                        <button id="btnPlay">Oyna</button>
+                        <button id="btnMute">Sesli</button>
+                    </div>
+                    <div class="right-controls">
+                        <button id="btnSpeed" class="speed-badge">1.0</button>
+                        <button id="btnPip">Pip</button>
+                        <button id="btnFull">Tam Ekran</button>
+                    </div>
+                 </div>
+            </div>
+
+        </div>
+        <!--iframe'li hali-->
+        <h2>Tanıtım Videosu 2</h2>
+        <div class="player container fullwidth">
+            <div class="video-container fullwidth">
+                <iframe class="fullwidth" height="315" src="https://www.youtube.com/embed/QCkIbXHLF_U?si=houGIdRjvWEiUEyZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+
+        </div>
+        <!--meters hali-->
+        <div class="fullwidth">
+            <label for="kontenjan"><strong>Kalan Kontenjan Durumu:</strong> 15 / 100 Öğrenci</label>
+            <br>
+            <meter id="kontenjan" min="0" max="100" low="20" high="80" optimum="90" value="15" class="fullwidth"></meter>
+            <div class="hint">Kontenjan bitmek üzere koş!</div>
+        </div>
+    </div>
+
+     <!--soru-cevap hali-->
+     <div class="container">
+        <h3 class="fullwidth">Sıkça Sorulan Sorular</h3>
+            <details>
+                <summary>Kayıt dönemi ne zaman bitiyor?</summary>
+                <p>Erken kayıt süreci 30 Ekim tarihine kadar devam etmektedir. Kontenjan dolduğunda sistem kapanır.</p>
+            </details>
+            <details>
+                <summary>Burs olanakları mevcut mu?</summary>
+                <p>Başarı sıralamasına göre %25, %50 ve %100 oranında tam eğitim bursları verilmektedir.</p>
+            </details>
+    </div>
+
+    <!--detaylı bilgi modal hali-->
+
+    <div class="container">
+        <h3 class="fullwidth">Detaylı Bilgi İçin Tıklayınız</h3>
+        <p>Aşağıdaki butona basarak detalı bilgiye erişebilirsiniz</p>
+        <button
+        class="info-btn"
+        onclick="document.getElementById('infoModal').showModal()">
+        Hemenn Tıkla
+        </button>
+    </div>
+
+    <dialog id="infoModal">
+        <h3>Detaylı Program Bilgisi</h3>
+        <p>Program süresi 4 yıldır. Eğitim dili %100 İngilizcedir. Çift anadal ve Erasmus programları mevcuttur.</p>
+        <button class="btn" id="closeDialog" style="background: #444;"
+        onclick="document.getElementById('infoModal').close()">Kapat</button>
+    </dialog>
+
+
+        <script>
+        const video = document.getElementById('myVideo');
+        const btnPlay = document.getElementById('btnPlay') ;
+        const btnMute = document.getElementById('btnMute');
+        const btnSpeed = document.getElementById('btnSpeed');
+        const btnPip = document.getElementById('btnPip');
+        const btnFull = document.getElementById('btnFull');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationTimeEl = document.getElementById('durationTime');
+
+        //1.Play / Pause Yönetimi
+        btnPlay.addEventListener('click', ()=>{
+            if(video.paused){
+                video.play();
+                btnPlay.innerText="Duraklat";
+            }else{
+                video.pause();
+                btnPlay.innerText="Oynat";
+            }
+        });
+
+        //2.Zaman Formatlama
+        function formatTime(seconds){
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')} `;
+        }
+
+        //3.Metadata Toplam Süreyi Alma
+        video.addEventListener('loadedmetadata',()=>{
+            durationTimeEl.innerText = formatTime(video.duration);
+        });
+
+        //4.Video İlerlerken ilerleme çubuğu güncelleme
+        video.addEventListener('timeupdate',()=>{
+            currentTimeEl.innerText = formatTime(video.currentTime);
+            const progress = (video.currentTime/ video.duration) * 100;
+            progressBar.value = isNaN(progress ? 0 : progress);
+        })
+
+        //5.Kullanıcı Cubuğu kaydırdığında videoyu ileri geri sarma
+        progressBar.addEventListener('input',(e)=>{
+            const seekTime = (e.target.value / 100)*video.duration;
+            video.currentTime = seekTime;
+        });
+
+        //6.Sessize Alma Toggle
+        btnMute.addEventListener('click',()=>{
+            video.muted = !video.muted;
+            btnMute.innerText = video.muted ? 'Sessiz' : 'Sesli';
+        })
+
+        //7.Oynatma Hızı
+        const speeds = [1.0,1.25,1.5,2.0];
+        let speedIndex = 0;
+        btnSpeed.addEventListener('click',() => {
+            speedIndex = (speedIndex + 1) % speeds.length;
+            video.playblackRate = speeds[speedIndex];
+            btnSpeed.innerText = `${speeds[speedIndex]}x`
+        })
+
+        //8.Pip resim içinde Resim
+        btnPip.addEventListener('click',async ()=>{
+            try{
+                if(document.pictureInPictureElement){
+                    await document.exitPictureInPicture();
+                }else{
+                    await video.requestPictureInPicture();
+                }
+            }catch(err){
+                console.warn('Pip desteklenmiyor veya izin verilmedi',err);
+            }
+        });
+
+        //9. Tam ekran
+        btnFull.addEventListener('click',()=>{
+            const container = document.getElementById('myVideo');
+            if(!document.fullscreenElement){
+                container.requestFullscreen().catch(err => alert(err.message))
+            }else{
+                document.exitFullscreen();
+            }
+        })
+
+    </script>
+    
+</body>
+</html>
