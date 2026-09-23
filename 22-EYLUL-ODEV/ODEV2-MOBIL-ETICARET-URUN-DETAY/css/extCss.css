@@ -1,0 +1,278 @@
+*,*::before,*::after{
+    box-sizing: border-box;
+    margin: 0;
+    border: 0;
+}
+
+:root{
+    --black: #000000;
+    --pad5: 10px;
+    --bg-color: #f3f0e6;
+}
+
+html{
+    /*Yazı Tipi Boyutlarını rem kullanmak için html'de yaptım*/
+    font-size: 100%;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    background-color: var(--bg-color);
+}
+
+.flex-col{
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+}
+
+.gap4{
+    gap: 10px;
+}
+
+.center{
+    align-items: center;
+}
+
+.page-container{
+    min-height: 100vh;
+
+    /* Arka plandaki ince ve şeffaf grid çizgileri  bu kısım ai'dan*/
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+  background-size: 150px 150px; /* Karelerin genişliği ve yüksekliği */
+  padding: 40px;
+  position: relative;
+  gap: 30px;
+}
+
+.top-bar{
+    position: sticky;
+    width: 100%;
+    top: 0;
+    z-index: 50;
+    background-color: var(--bg-color);
+    border-bottom: 3px solid black;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+}
+
+.nav-left{
+    font-size: 22px;
+    font-weight: 700;
+    cursor: pointer;
+    line-height: 1;
+    border: 1px solid;
+    align-items: center;
+}
+
+.brand-title{
+    font-size: clamp(1rem,8vw,3rem);
+    font-weight: 700;
+}
+
+.top-bar .nav-right{
+    align-items: center;
+    gap: 16px;
+    font-size: 20px;
+    cursor: pointer;
+    padding-right: 16px;
+}
+
+.top-bar .nav-right svg{
+    width: 22px;
+    height: 22px;
+    stroke: var(--black);
+    fill: none;
+    stroke-width: 2;
+}
+
+.hero-box{
+    width: 100%;
+    height: fit-content;
+    justify-content: center;
+    gap: 30px;
+}
+
+h1{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: clamp(2rem,8vw,5rem);
+    line-height: 0.85;
+    letter-spacing: -4px;
+    pointer-events: none;
+    text-transform: uppercase;
+    font-weight: 900;
+    color: #000000;
+    align-self: flex-start;
+}
+
+.hero-title{
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.heroFoto{
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+}
+
+.badges{
+    position: absolute;
+    top: -10px;
+    bottom: 10px;
+    right: 100px;
+    gap: 8px;
+    z-index: 10;
+}
+
+.badge {
+    position: absolute;
+    top: 10px;
+    padding: 6px 12px;
+    font-size: clamp(10px, 1.2vw, 14px);
+    font-weight: 700;
+    text-align: center;
+    border: 1px solid var(--black); 
+    white-space: nowrap;
+}
+
+.discount-badge {
+    left: 0px;
+    background-color: var(--black);
+    color: var(--bg-color);
+}
+
+.shipping-badge {
+    right: 0px;
+    background-color: var(--bg-color);
+    color: var(--black);
+}
+
+.heroFoto img{
+    width: 100%;
+    height: 100%;
+    max-height: 400px;
+    pointer-events: none;
+}
+
+.hero-price{
+    font-size: clamp(3rem,8vw,6rem);
+    font-weight: 600; 
+}
+
+
+.int-top{
+    width: 100%;
+    border-top: 1px solid var(--black);
+    justify-content: space-between;
+    padding: var(--pad5);
+}
+
+.int-mid{
+    width: 100%;
+    border: 1px solid var(--black);
+    justify-content: space-between;
+    gap: 0px;
+}
+
+.slider-foto-box{
+    flex: 1;
+    height: fit-content;
+    display: flex;
+    border: 1px solid var(--black);
+}
+
+.int-box span{
+    font-size: clamp(15px,1.5vw,20px);
+}
+
+.int-mid img{
+    width: 100%;
+    object-fit: cover;
+}
+
+.int-bot{
+    width: 100%;
+    border-bottom: 1px solid var(--black);
+    justify-content: space-between;
+    padding: var(--pad5);
+}
+
+.size-box{
+    justify-content: space-between;
+    gap: clamp(10px,10vw,80px);
+    width: 100%;
+    padding: var(--pad5);
+}
+
+.buttons-box{
+    flex:1;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.size-btn{
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--black);
+    cursor: pointer;
+}
+
+.size-btn:focus{/* ŞANSIMA BİRİNİ SEÇİNCE DİĞERLERİDE FOCUS KALKIYOR*/
+    background-color: var(--black);
+}
+
+.btn-txt{
+    font-size: clamp(5px,17px,20px);
+}
+
+.sepet-bar{
+    position: fixed;
+    bottom: 15px;
+    left: 10px;
+    right: 10px;
+    width: auto;
+    background-color: var(--black);
+    color: var(--bg-color);
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--pad5);
+}
+
+.sepet-price-box{
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    gap:20px;
+}
+
+.sepet-price{
+    font-size: xx-large;
+    font-weight: 400;
+    align-self: flex-start;
+}
+
+.discount{
+    align-self: flex-start;
+    color: #888888;
+    text-decoration: line-through;
+}
+
+.sepet-btn{
+    background-color: var(--black);
+    color: var(--bg-color);
+    border: 1px solid var(--bg-color);
+    cursor: pointer;
+    padding: var(--pad5);
+    z-index: 100;
+}
+
