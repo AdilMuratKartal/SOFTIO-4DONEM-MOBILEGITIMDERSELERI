@@ -1,0 +1,25 @@
+:root{
+    --font-body:  'Inter', sans-serif; 
+    --font-heading: 'Space Grotesk', sans-serif;
+    --text-upc: uppercase;
+    /*Renk Değişkenlerimiz*/
+    --clr-bg: #0D0D0D;
+    --clr-surface: #1A1A1A;
+    --clr-accent-primary: #CCFF00;
+    --clr-accent-secondary: #FF2D6B;
+    --clr-text: #FFFFFF;
+    --clr-text-muted: #999999;
+    /*Boşluklar margin padding gap için değişkenlerimiz*/
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 4rem;
+    /*Diğer Değişkenlerimiz */
+    --border-brutal: 1px solid var(--clr-text);
+    --radius-brutal: 0px;
+    --shadow-brutal: 6px 6px 0 var(--clr-accent-primary);
+    --shadow-brutal-sec: 6px 6px 0 var(--clr-accent-secondary);
+    --transition-smooth: all 0.3s ease;
+    --box-shadow: 0 10px 20px rgba(204,255,0,0.5);
+}
