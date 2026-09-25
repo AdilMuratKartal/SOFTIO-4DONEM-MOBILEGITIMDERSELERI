@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS İlk Ders</title>
+</head>
+<body>
+    
+
+
+
+
+
+    <script>
+        /*
+        //1.Var felaketi Süslü parantez dinlemez dışarıya sızar
+
+        if(true){
+            var tehlikeliSayı = 999;
+        }
+        console.log('var sızdı mı ? ',tehlikeliSayı)
+
+        //2. Let ve const kalkanı: Süslü parantez bir oda çıkış yasak çıkamaz
+        if(true){
+            let guvenliSayi = 42;
+            const PI = 3.1415
+            console.log("oda içi",guvenliSayi,PI);
+        }
+       // console.warn(guvenliSayi);
+
+       const API_URL="https://www.kodusta.com/v1";
+       console.log(API_URL);
+       //let API_URL ="tekrar eden iink" burda hata veriyor tekrar tanımlayazsın çünkü
+
+        //DİKKAT EDİN BURAYA 
+        const arac={marka:"Togg",model:"T10X"};
+        console.log(arac);
+        arac.renk = "Beyaz";
+        console.log(arac);
+        //Bu yasak kullanamazsın
+        arac = {arac:"baskaArac"};//direk obje içini değiştiremezsin eklenebilir çıkarılabilir komple değişmöez, yada obje
+        */
+
+        /*
+        // VERİ TİPLERİ & TİP DÖNÜŞÜMÜ        
+        const isim = "Selahaddin"; //String
+        const bataryaKapasite = 88.5; //Number (float/int ayrım almıyor)
+        const sarjTamamlandi = false; //boolean
+        let sonrakiRandevu; //undefined (kutu var içi boş)
+        const servisNotu = null; //NULL bilinçli olarak boş bırakılan değer
+        const büyükSayi = 65161616161611n; //BigInt;
+        const gizliAnahtar = Symbol("id"); //Symbol
+        const sayiDizi = [1,4,5,5,2]; //Array
+        const objeObje = {ad:"Murat", yas:22};
+
+        console.log(typeof isim);
+        console.log(typeof bataryaKapasite);
+        console.log(typeof sarjTamamlandi);
+        console.log(typeof sonrakiRandevu);
+        console.log(typeof servisNotu);//bana boş bir şey geldi bir nesne olarak gösteriyorum object yazıyor
+        console.log(typeof büyükSayi);
+        console.log(typeof gizliAnahtar);
+        console.log(typeof sayiDizi);
+        console.log(typeof objeObje);
+        */
+
+        /*
+        // + işareti metin birleştirme yapar. + JS'te matematik hesabı değil string hesabı görür, artı için number'a çevirmen gerekiyor.
+        //diğer işaretler direk matematik hesapları için kullanıldığı için çarpar
+        console.log("5"+2);//5'i burda direk string olarak verir string concatenation algılıyor galiba.
+        console.log("5"-2);//3 çıkar. - işareti zorla sayıya çevirir
+        console.log("5"*"4");// çarpma işlemi sayıya çevirir
+        console.log("bes"*2);//NaN(Not a Number) çıkar.NaN not a number hatası alırız.
+        */
+
+        /*
+        console.log(typeof NaN);//number çıkıyor
+        console.log(NaN === NaN);//false çıkıyor .
+        console.log(Number.isNaN(NaN));//burda true çıkıyor. çünkü dönüşümü number'a veriyor. 
+        */
+
+        /*
+        // Manuel Tip Dönüştürme (profesyonel yolu)
+        const stringFiyat = "1473.33";//virgüllü olmaması gerekiyor, eğer virgül olursa 2 farklı değer olarak görür javascripte o işe yarıyor.
+        const sayiFiyat = Number(stringFiyat);
+        const pixelDegeri = parseInt("48px",10);//int harici herşeyi ele dedik, px gitti 10 u eledi çünkü ilk olarak 48 sayımızı verdi;
+        const metinSayi = String(2026);
+        
+        console.log(stringFiyat)
+        console.log(sayiFiyat)
+        console.log(pixelDegeri)
+        console.log(metinSayi)
+        */
+
+        /*
+        // Katı Eşitlik
+        // NEDEN her zaman === kullanmalıyız ?
+        console.log(5=="5"); // tip değil değer karşılaştırması yapıyor.TRUE ÇIKAR. (gevşek eşitlik tipi zorla çeviri Asla kullanma)
+        console.log(5==="5");// şimdi tip eşitlemesi yaptı.FALSE
+        console.log(0==false);//true (gevşek eşitlik felaket)
+        console.log(0===false);//false veri tipi hem veriyi kontrol ettik
+        console.log(null==undefined);//true
+        console.assert(null === undefined);//false
+        */
+
+        /*
+        //Template Literals
+        const kullanici = "Ersa Ergün";
+        const bakiye = 1000;
+        const harcama = 10000;
+
+        const eskiMesaj = "Sayin " + kullanici + ", Kalan Bakiyeniz:" + (bakiye-harcama) + " TL'dir."
+        console.log(eskiMesaj);
+        
+        //Modern E6 Standartları SuperString backtrink
+        const modernMesaj =`Sayın ${kullanici},
+        Bugünkü Harcamanız: ${harcama}TL, 
+        Kalan Bakiyeniz: ${bakiye-harcama}TL, 
+        Durum:${bakiye-harcama>1000 ? "Güvenli Bakiye":"Kritik Bakiye"}`
+
+        console.log(modernMesaj);
+        */
+
+        /*
+        const bataryaSeviyesi = 30;
+        const istasyonUygunmu = true;
+        const bakiyeTL = 200;
+        const minimumGirisTutari = 300;
+
+        if(!istasyonUygunmu){
+            console.log('İstasyon şuanda Servis dışı veya meşgul');
+        }else if(bakiyeTL<minimumGirisTutari){
+            console.log(`bakiye yetersiz! en az ${minimumGirisTutari} gereklidir. Mevcut: ${bakiyeTL} TL`);
+        }else if(bataryaSeviyesi<=20){
+            console.log("Kritik Seviye Ultra hızlı Dc şarj moduna geçiliyor ");
+        }else{
+            console.log("Standart Şarj Başlatılabilir.")
+        }
+        */
+       
+
+        /*
+        // Js de şu 6 değer false olarak kabul edilir.
+        //false,0,"",null,undefined,NaN
+        //bunun dışındaki HERŞEY [] boş dizi olarak true olarak kabul edilir.
+        const kullaniciGirdisi = 0;
+        if(kullaniciGirdisi){
+            console.log("Girdi dolu")
+        }else{
+            console.log("Girdi Boş")
+        }
+        */
+
+        /*
+        // koşul ? doğruysa_değer : yanlissa_deger
+        // Tek if else koşulları için sanırsam ternarny idi
+        const soketDurumu = "uygun";
+        const durumMesaji = soketDurumu === "uygun" ? "Soket boşta" : "Soket kullanımda";
+        console.log(durumMesaji);
+        */
+
+        /*
+        //arrow function
+        //klasik fonksiyon
+        function toplaKlasik(sayi1,sayi2){
+            return sayi1 + sayi2;
+        }
+        //modern fonksiyon (es6 standartlarıyla)
+        const toplaModern = (sayi1,sayi2) => {
+            return sayi1 + sayi2;
+        }
+
+        // tek satırlık function arrow
+        const toplaKisa = (sayi1,sayi2) => sayi1 + sayi2;
+
+        //tek parametreli
+        const karesiniAl = sayi => sayi * sayi;
+
+        const profilUret = (ad,rol) => ({
+            ad:ad,
+            rol:rol,
+            kayitTarihi:2026
+        });//parantez olarak yaptığımızda veri dönüşümüz json olacak diyoruz çünkü json köşeyiliyi kullanıyor. 
+        //bizde içini json olarak kullandık
+
+        console.log("Toplama Sonucu",toplaKisa(15,27));
+        console.log(karesiniAl(8));
+        console.log("Profil",profilUret("Tuba","Öğrenci"))
+        */
+
+        
+        //Meydan Okuma konusu İndirimli Sepet Tutarı Hesaplayıcı
+        const finalTutarHesapla = (tutar,indirimOranı) => {
+            const finalTutar = tutar * (100-indirimOranı) / 100;
+            return finalTutar;
+        }
+
+        console.log(finalTutarHesapla(100,20))
+        const indirimHesapla = (tutar, indirimTutari) =>
+        (tutar-tutar*(indirimtutari/100))
+
+
+        //Meydan Okuma konusu şarj süresi tahmin dakika cinsinden, kaç dakikada şarj olur
+        //verilecek değerler: mevcut yüzde, hedef yüzde, bataryaKW, istasyonKw
+        //bataryaKw her bir dakikada kaç Kw aldığımız belli oluyormuş
+        const sarjSuresi = (mevcutYuzde, hedefYuzde, bataryaKw, istasyonKw) => {
+            if (mevcutYuzde === hedefYuzde) {
+            return 0;
+            }
+
+            let sarjGucu;
+
+            if (istasyonKw > bataryaKw) {
+                sarjGucu = bataryaKw;
+            } else {
+                sarjGucu = istasyonKw;
+            }
+
+            const gerekenYuzde = hedefYuzde - mevcutYuzde;
+            const gerekliEnerji = bataryaKw * (gerekenYuzde / 100);
+            return (gerekliEnerji / sarjGucu) * 60;
+
+        };
+
+    </script>
+
+    
+</body>
+</html>
