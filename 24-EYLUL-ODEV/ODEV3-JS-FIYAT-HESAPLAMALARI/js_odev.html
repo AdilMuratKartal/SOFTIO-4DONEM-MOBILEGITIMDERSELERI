@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meydan Okumalar</title>
+</head>
+<body>
+
+    <script>
+
+        //1.Sure Hesaplama
+        const sarjSuresi1 = (mevcutYuzde, hedefYuzde, bataryaKw, istasyonKw) => {
+            if (mevcutYuzde === hedefYuzde) {
+            return 0;
+            }
+
+            let sarjGucu;
+
+            if (istasyonKw > bataryaKw) {
+                sarjGucu = bataryaKw;
+            } else {
+                sarjGucu = istasyonKw;
+            }
+
+            const gerekenYuzde = hedefYuzde - mevcutYuzde;
+            const gerekliEnerji = bataryaKw * (gerekenYuzde / 100);
+            return (gerekliEnerji / sarjGucu) * 60;
+        };
+
+        //2.Fiyat Hesapla yüzdelik hesabı için 3 araç tipi seçilecektir. dakika başına fiyatlandırılacaktır.
+        //daha sonra yuzdePerKw direk girdi olarak verileribilir.
+
+        const sarjSuresi = (mevcutYuzde, hedefYuzde, bataryaKw, istasyonKw, yuzdePerKw) => {
+            if (mevcutYuzde >= hedefYuzde) return 0;
+            const sarjGucu = Math.min(bataryaKw,istasyonKw);
+            if (sarjGucu <= 0) throw new Error("Şarj Edilemiyor");
+            const gerekenYuzde = hedefYuzde - mevcutYuzde;
+            const gerekliEnerji = yuzdePerKw * gerekenYuzde;
+            return Math.round((gerekliEnerji / sarjGucu) * 60);
+        };
+
+        const ucretHesapla = (veriler) => {
+            const {mevcutYuzde, hedefYuzde, bataryaKw, istasyonKw, aracTipi, dakikaPerFiyat} = veriler;
+            let yuzdePerKw;
+
+            if (mevcutYuzde >= hedefYuzde) {
+                return 0;
+            }
+
+            if(aracTipi === "Tesla"){
+                yuzdePerKw = 1000;
+            }else if(aracTipi === "Togg"){
+                yuzdePerKw = 1500;
+            }else if(aracTipi === "Byd"){
+                yuzdePerKw = 2000;
+            }else{
+                return "Tanimlanamayan Araç Tipi"
+            }
+    
+            const toplamDakika = sarjSuresi(mevcutYuzde, hedefYuzde, bataryaKw, istasyonKw, yuzdePerKw);
+            return toplamDakika * dakikaPerFiyat;
+
+        }
+
+
+        //3.Gece Gündüz Hesaplamaları önceden belirlenen sarjSuresi burada tekrardan kullanılacaktır
+        //dakika üzerinden hesaplanacağı için günün 24 saati süresini alıcaz 24 * 60 = 1440, ve başlangıç saatide gerekiyor
+        //06:00 ile 22:00 arasını gündüz gerisini gece alıcağız
+        const tarifeHesapla = (veriler,baslangicSaat,baslangicDakika, gunduzPerFiyat, gecePerFiyat) => {
+            const {mevcutYuzde, hedefYuzde, bataryaKw, istasyonKw, aracTipi} = veriler;
+            let yuzdePerKw;
+
+            if (mevcutYuzde >= hedefYuzde) {
+                return 0;
+            }
+
+            if(aracTipi === "Tesla"){
+                yuzdePerKw = 1000;
+            }else if(aracTipi === "Togg"){
+                yuzdePerKw = 1500;
+            }else if(aracTipi === "Byd"){
+                yuzdePerKw = 2000;
+            }else{
+                return "Tanimlanamayan Araç Tipi"
+            }
+    
+            const toplamDakika = sarjSuresi(mevcutYuzde, hedefYuzde, bataryaKw, istasyonKw, yuzdePerKw);
+            
+            let toplamUcret = 0;
+
+            let anlikDakika = (baslangicSaat * 60 + baslangicDakika) % 1440;
+
+            for(let i = 0; i < toplamDakika ; i++){
+                const anlikSaat = Math.floor(anlikDakika / 60)
+
+                //22:00 oldumu gece oluıyor o yüzden eşiittir koymayalım
+                if(anlikSaat >= 6 && anlikSaat < 22){
+                    toplamUcret += gunduzPerFiyat;
+                }else{
+                    toplamUcret += gecePerFiyat;
+                }
+
+                //Saat 24:00 geçme ihtimali olursa diye bir % 1440 verelim burdan kalan 0,1,2 geceyi verir.
+                anlikDakika = (anlikDakika + 1) % 1440;
+            }
+
+          return toplamUcret;
+
+        };
+
+
+        
+
+    </script>
+    
+</body>
+</html>
