@@ -1,6 +1,3 @@
-import 'dart:ffi';
-import 'dart:isolate';
-
 ///1-kargoucretihesapla sıkıntı, ISP İHLALİ URUN tipine göre kargo ücreti hesaplanmaz
 ///2-siparişişlemleri gereğinden fazla işlem yapıyor kargo açma sms,mail,fatura vs. arayüz şişmiş OCP hatası
 ///3-SiparisYoneticisi db'e kaydetme işlemleri yapıyor,fiyat hesaplıyor bu sınıftada fazla sorumluluk var, SRP
@@ -256,7 +253,7 @@ class SiparisYoneticisi {
 
 void main() {
   final siparisYoneticisi = SiparisYoneticisi(
-    db: SqliteVeritabaniServisi(),
+    db: SiparisDAOSqlite(),
     mailServisi: SmtpMailServisi(),
     smsServisi: NetgsmSmsServisi(),
     kargoServisi: MngKargoServisi(),
