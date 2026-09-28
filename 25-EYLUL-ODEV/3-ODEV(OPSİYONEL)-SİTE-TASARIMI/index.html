@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ev Koleksiyonu — Ürün Yönetimi</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ==========================================
+         1. CSS RESET & DEĞİŞKENLER
+         ========================================== */
+      :root {
+        /* Renkler */
+        --bg: #f5f0e8;
+        --card: #fffdf8;
+        --terracotta: #c67b5c;
+        --terracotta-hover: #b56a4b;
+        --text: #3d3027;
+        --muted: #8c8279;
+        --border: #e8e0d4;
+        --badge-bg: #ede7dd;
+        --olive: #8b9e7e;
+        --danger: #d94f4f;
+
+        /* Boşluklar */
+        --space-xs: 4px;
+        --space-sm: 8px;
+        --space-md: 12px;
+        --space-base: 16px;
+        --space-lg: 20px;
+        --space-xl: 24px;
+        --space-2xl: 32px;
+        --space-3xl: 48px;
+
+        /* Diğer */
+        --radius: 12px;
+        --radius-sm: 8px;
+        --radius-pill: 20px;
+        --shadow: 0 2px 8px rgba(61, 48, 39, 0.06);
+        --shadow-hover: 0 8px 24px rgba(61, 48, 39, 0.12);
+        --transition: all 0.3s ease;
+        --font: "DM Sans", system-ui, sans-serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font);
+        padding: var(--space-3xl) var(--space-base);
+        line-height: 1.5;
+        min-height: 100vh;
+      }
+
+      /* ==========================================
+         2. ANA KONTEYNER
+         ========================================== */
+      .koleksiyon {
+        max-width: 960px;
+        margin: 0 auto;
+      }
+
+      /* ==========================================
+         3. HEADER
+         ========================================== */
+      .header {
+        margin-bottom: var(--space-xl);
+        padding-bottom: var(--space-base);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .header__tag {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--terracotta);
+        font-weight: 700;
+      }
+
+      .header__title {
+        font-size: clamp(1.6rem, 4vw, 1.75rem);
+        font-weight: 300;
+        letter-spacing: -0.02em;
+        color: var(--text);
+        margin-top: 2px;
+      }
+
+      /* Canlı gösterge (pulse animasyonu) */
+      .live-dot {
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--olive);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .live-dot__circle {
+        width: 10px;
+        height: 10px;
+        background: var(--olive);
+        border-radius: 50%;
+        position: relative;
+      }
+
+      .live-dot__circle::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: var(--olive);
+        animation: pulse 2s ease-out infinite;
+      }
+
+      /* ==========================================
+         4. @KEYFRAMES ANİMASYON (infinite)
+         ========================================== */
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(2);
+          opacity: 0.4;
+        }
+        100% {
+          transform: scale(3);
+          opacity: 0;
+        }
+      }
+
+      /* ==========================================
+         5. KPI GRID (CSS Grid)
+         ========================================== */
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+        margin-bottom: var(--space-xl);
+      }
+
+      .kpi-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: var(--space-lg) var(--space-xl);
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .kpi-card span {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 500;
+        display: block;
+      }
+
+      .kpi-card h3 {
+        font-size: 32px;
+        font-weight: 300;
+        color: var(--terracotta);
+        margin-top: var(--space-xs);
+      }
+
+      .kpi-card__icon {
+        font-size: 28px;
+        opacity: 0.5;
+      }
+
+      /* ==========================================
+         6. ANA LAYOUT (CSS Grid)
+         ========================================== */
+      .layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-xl);
+      }
+
+      /* ==========================================
+         7. PANEL (Form & Liste)
+         ========================================== */
+      .panel {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: var(--space-lg);
+        box-shadow: var(--shadow);
+      }
+
+      .panel h4 {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: var(--space-md);
+        padding-bottom: var(--space-sm);
+        border-bottom: 1px solid var(--border);
+        color: var(--text);
+      }
+
+      /* ==========================================
+         8. FORM
+         ========================================== */
+      .field {
+        margin-bottom: 14px;
+      }
+
+      .field label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: var(--space-xs);
+        color: var(--text);
+      }
+
+      .field input,
+      .field select {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 13px;
+        font-family: var(--font);
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text);
+        transition: border-color 0.2s ease, background 0.2s ease;
+      }
+
+      .field input:focus,
+      .field select:focus {
+        outline: none;
+        border-color: var(--terracotta);
+        background: var(--card);
+      }
+
+      .field input::placeholder {
+        color: var(--muted);
+        opacity: 0.7;
+      }
+
+      .btn-submit {
+        width: 100%;
+        background: var(--terracotta);
+        color: #ffffff;
+        border: none;
+        padding: 12px;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: var(--font);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        margin-top: 6px;
+        transition: background 0.2s ease;
+      }
+
+      .btn-submit:hover {
+        background: var(--terracotta-hover);
+      }
+
+      /* ==========================================
+         9. FİLTRE BAR
+         ========================================== */
+      .filter-bar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: var(--space-md);
+      }
+
+      .filter-bar input {
+        flex: 1;
+        padding: 10px 14px;
+        font-size: 13px;
+        font-family: var(--font);
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text);
+        transition: border-color 0.2s ease, background 0.2s ease;
+      }
+
+      .filter-bar input:focus {
+        outline: none;
+        border-color: var(--terracotta);
+        background: var(--card);
+      }
+
+      .filter-bar input::placeholder {
+        color: var(--muted);
+        opacity: 0.7;
+      }
+
+      .filter-bar select {
+        width: 130px;
+        padding: 8px 10px;
+        font-size: 12px;
+        font-family: var(--font);
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text);
+      }
+
+      .filter-bar select:focus {
+        outline: none;
+        border-color: var(--terracotta);
+      }
+
+      /* ==========================================
+         10. ÜRÜN KARTLARI GRID (CSS Grid)
+         ========================================== */
+      .product-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-base);
+      }
+
+      .product-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        transition: var(--transition);
+        cursor: default;
+      }
+
+      /* HOVER & TRANSITION */
+      .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-hover);
+      }
+
+      .product-card__img {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        display: block;
+        background: var(--border);
+      }
+
+      .product-card__body {
+        padding: var(--space-base);
+      }
+
+      .product-card__name {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text);
+        margin-bottom: var(--space-sm);
+      }
+
+      .product-card__badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--muted);
+        background: var(--badge-bg);
+        padding: 3px 10px;
+        border-radius: var(--radius-pill);
+      }
+
+      .product-card__footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: var(--space-md);
+      }
+
+      .product-card__price {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--terracotta);
+      }
+
+      .btn-del {
+        background: transparent;
+        border: none;
+        color: var(--muted);
+        font-size: 12px;
+        font-family: var(--font);
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        transition: color 0.2s ease;
+        padding: 4px;
+      }
+
+      .btn-del:hover {
+        color: var(--danger);
+      }
+
+      /* Boş durum */
+      .empty-state {
+        padding: var(--space-xl);
+        text-align: center;
+        color: var(--muted);
+        font-size: 13px;
+        grid-column: 1 / -1;
+      }
+
+      /* ==========================================
+         11. RESPONSIVE — MOBILE-FIRST
+         ========================================== */
+
+      /* Tablet (min-width: 768px) → 2 sütun */
+      @media (min-width: 768px) {
+        .kpi-grid {
+          grid-template-columns: repeat(3, 1fr);
+          gap: var(--space-base);
+        }
+
+        .product-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: var(--space-base);
+        }
+      }
+
+      /* Masaüstü (min-width: 1024px) → 3 sütun + sidebar */
+      @media (min-width: 1024px) {
+        .layout {
+          grid-template-columns: 320px 1fr;
+        }
+
+        .product-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="koleksiyon">
+      <!-- HEADER -->
+      <header class="header">
+        <div>
+          <span class="header__tag">Ürün Yönetimi</span>
+          <h1 class="header__title">Ev Koleksiyonu</h1>
+        </div>
+        <div class="live-dot">
+          <span class="live-dot__circle"></span>
+          Aktif
+        </div>
+      </header>
+
+      <!-- KPI KARTLARI -->
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <div>
+            <span>Kayıtlı Ürün</span>
+            <h3 id="kpiCount">0</h3>
+          </div>
+          <div class="kpi-card__icon">🪑</div>
+        </div>
+        <div class="kpi-card">
+          <div>
+            <span>Toplam Tutar</span>
+            <h3 id="kpiTotal">0 ₺</h3>
+          </div>
+          <div class="kpi-card__icon">💰</div>
+        </div>
+        <div class="kpi-card">
+          <div>
+            <span>Ortalama Fiyat</span>
+            <h3 id="kpiAvg">0 ₺</h3>
+          </div>
+          <div class="kpi-card__icon">📊</div>
+        </div>
+      </section>
+
+      <!-- ANA LAYOUT -->
+      <main class="layout">
+        <!-- SOL: FORM PANELİ -->
+        <section class="panel">
+          <h4>Yeni Ürün Ekle</h4>
+          <form id="orderForm">
+            <div class="field">
+              <label for="prodName">Ürün Adı</label>
+              <input
+                type="text"
+                id="prodName"
+                placeholder="Yün Battaniye"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="prodCat">Kategori</label>
+              <select id="prodCat">
+                <option value="Mobilya">Mobilya</option>
+                <option value="Aydınlatma">Aydınlatma</option>
+                <option value="Mutfak">Mutfak</option>
+                <option value="Tekstil">Tekstil</option>
+                <option value="Dekorasyon">Dekorasyon</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="prodPrice">Fiyat (₺)</label>
+              <input
+                type="number"
+                id="prodPrice"
+                value="3250"
+                min="100"
+                step="50"
+                required
+              />
+            </div>
+            <button type="submit" class="btn-submit">Ürün Ekle</button>
+          </form>
+        </section>
+
+        <!-- SAĞ: ÜRÜN LİSTESİ PANELİ -->
+        <section class="panel">
+          <div class="filter-bar">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Ürün adına göre ara..."
+            />
+            <select id="categoryFilter">
+              <option value="ALL">Tümü</option>
+              <option value="Mobilya">Mobilya</option>
+              <option value="Aydınlatma">Aydınlatma</option>
+              <option value="Mutfak">Mutfak</option>
+              <option value="Tekstil">Tekstil</option>
+              <option value="Dekorasyon">Dekorasyon</option>
+            </select>
+          </div>
+          <div id="productContainer" class="product-grid">
+            <!-- Dinamik ürün kartları buraya -->
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      // ==========================================
+      // VERİ
+      // ==========================================
+      const IMAGES = {
+        Mobilya:
+          "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop",
+        Aydınlatma:
+          "https://images.unsplash.com/photo-1507473885765-e6ed057ab6fe?w=400&h=300&fit=crop",
+        Mutfak:
+          "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=400&h=300&fit=crop",
+        Tekstil:
+          "https://images.unsplash.com/photo-1543294001-f7cd5f253940?w=400&h=300&fit=crop",
+        Dekorasyon:
+          "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=400&h=300&fit=crop",
+      };
+
+      let orders = [
+        { id: 1, name: "Koltuk Takımı", category: "Mobilya", price: 28000 },
+        { id: 2, name: "Masa Lambası", category: "Aydınlatma", price: 3500 },
+        { id: 3, name: "Seramik Fincan Seti", category: "Mutfak", price: 1850 },
+        { id: 4, name: "Yün Battaniye", category: "Tekstil", price: 4200 },
+        { id: 5, name: "Ahşap Sandalye", category: "Mobilya", price: 6500 },
+        { id: 6, name: "Saksı Bitki", category: "Dekorasyon", price: 950 },
+      ];
+
+      // ==========================================
+      // DOM
+      // ==========================================
+      const productContainer = document.getElementById("productContainer");
+      const orderForm = document.getElementById("orderForm");
+      const searchInput = document.getElementById("searchInput");
+      const categoryFilter = document.getElementById("categoryFilter");
+      const kpiCount = document.getElementById("kpiCount");
+      const kpiTotal = document.getElementById("kpiTotal");
+      const kpiAvg = document.getElementById("kpiAvg");
+
+      // ==========================================
+      // KPI GÜNCELLE
+      // ==========================================
+      const updateKPIs = (dataList) => {
+        kpiCount.textContent = dataList.length;
+
+        if (dataList.length === 0) {
+          kpiTotal.textContent = "0 ₺";
+          kpiAvg.textContent = "0 ₺";
+          return;
+        }
+
+        const total = dataList.reduce((acc, curr) => acc + curr.price, 0);
+        kpiTotal.textContent = `${total.toLocaleString("tr-TR")} ₺`;
+
+        const avg = total / dataList.length;
+        kpiAvg.textContent = `${Math.round(avg).toLocaleString("tr-TR")} ₺`;
+      };
+
+      // ==========================================
+      // RENDER (Filtreleme + Dinamik DOM)
+      // ==========================================
+      const renderOrders = () => {
+        const term = searchInput.value.toLowerCase().trim();
+        const selectedCat = categoryFilter.value;
+
+        const filtered = orders.filter((order) => {
+          const matchesName = order.name.toLowerCase().includes(term);
+          const matchesCategory =
+            selectedCat === "ALL" || order.category === selectedCat;
+          return matchesName && matchesCategory;
+        });
+
+        productContainer.innerHTML = "";
+
+        if (filtered.length === 0) {
+          productContainer.innerHTML = `
+            <div class="empty-state">
+              Kriterlere uygun ürün bulunamadı.
+            </div>`;
+          updateKPIs([]);
+          return;
+        }
+
+        filtered.forEach((order) => {
+          const card = document.createElement("article");
+          card.className = "product-card";
+          card.setAttribute("data-id", order.id);
+
+          const imgSrc = IMAGES[order.category] || IMAGES["Mobilya"];
+
+          card.innerHTML = `
+            <img
+              class="product-card__img"
+              src="${imgSrc}"
+              alt="${order.name}"
+              loading="lazy"
+            />
+            <div class="product-card__body">
+              <h5 class="product-card__name">${order.name}</h5>
+              <span class="product-card__badge">${order.category}</span>
+              <div class="product-card__footer">
+                <span class="product-card__price">₺${order.price.toLocaleString("tr-TR")}</span>
+                <button class="btn-del" data-action="delete">Kaldır</button>
+              </div>
+            </div>`;
+
+          productContainer.appendChild(card);
+        });
+
+        updateKPIs(filtered);
+      };
+
+      // ==========================================
+      // SİLME (Event Delegation)
+      // ==========================================
+      productContainer.addEventListener("click", (e) => {
+        if (e.target.dataset.action === "delete") {
+          const card = e.target.closest(".product-card");
+          const id = Number(card.dataset.id);
+          orders = orders.filter((o) => o.id !== id);
+          renderOrders();
+        }
+      });
+
+      // ==========================================
+      // EKLEME
+      // ==========================================
+      orderForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("prodName").value.trim();
+        const category = document.getElementById("prodCat").value;
+        const price = Number(document.getElementById("prodPrice").value);
+
+        if (!name || price < 100) return;
+
+        const newId =
+          orders.length > 0 ? Math.max(...orders.map((o) => o.id)) + 1 : 1;
+
+        orders.push({ id: newId, name, category, price });
+
+        orderForm.reset();
+        document.getElementById("prodPrice").value = "3250";
+        renderOrders();
+      });
+
+      // ==========================================
+      // FİLTRE DİNLEYİCİLER
+      // ==========================================
+      searchInput.addEventListener("input", renderOrders);
+      categoryFilter.addEventListener("change", renderOrders);
+
+      // İlk render
+      renderOrders();
+    </script>
+  </body>
+</html>

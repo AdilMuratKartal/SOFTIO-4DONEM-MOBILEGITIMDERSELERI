@@ -1,0 +1,400 @@
+<!doctype html><!-- HTML5 OLDUĞUNU BELİRTTİĞİMİZ ETİKETTİR --> 
+<html lang="en"><!--SAYFAMIZIN KÖK DİZİN OLAN HTML TAGININ AÇILIŞIDIR -->
+  <head><!--ARKA PLAN VE TEKNİK BİLGİLERİN OLDUĞU BÖLÜMDÜR  -->
+    <meta charset="UTF-8" /><!-- TÜRKÇE KARAKTER DESTEĞİNİN TANIMLANDIĞI KISIMDIR -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><!--SİTENİN AÇILDIĞI CİHAZI ALGILAR TEL,PC,TABLET VS. ONA GÖRE BOYUTLANDIRMA YAPAR -->
+    <title>Sipariş & Gelir Kokpit Dashboard</title><!--SİTEMİNİZ BAŞLIĞIDIR PENCERE KISMINDA GÖZÜKÜR -->
+    <style>/*body etiketi içindeki bütün tag elementlerimizi stil vereceğimiz tag'nı başlangıcıdır*/
+      :root { /*sayfamızda divlerimize atacğımız ortak stillere değiken vererek atama yapacğımız root köküdür*/
+        --bg: #f8f7f4;/*sayfamızda arka planda yada bazı divlerde verdiğimiz arka plan rengidir*/
+        --card: #ffffff;/*card ve panel formunun arka planına vereceğimiz renk değişkenidir*/
+        --border: #e6e5df;/*bir çok konteyner görevi gören etiketlerin border'ları için verdiğimiz renktir.*/
+        --text: #181716;/*sayfadı bütün metinlere renklerini vereceğimiz etikettir body'de olsa yeter*/
+        --muted: #6b6963;/*bazı etiketlerin üzerinde gelinde animasyon vermek için text renklerini farklı verdiğimiz renk değişkeni*/
+        --clay: #c85a32;/*form daki taglere hover efeklerinde h etiketlerinde vereceğimiz etikettir*/
+        --clay-hover: #b04e29;/*sadece formdaki button'a hover;üzerine gelindiğinde vereceğimiz renk değişkeni*/
+        --font-main: "Plus Jakarta Sans", system-ui, sans-serif;/*sayfadaki metinlere vereceğimiz font-family attribute'ına ait değişkendir*/
+        --font-mono: "JetBrains Mono", monospace;/*bazı etiketlerde kullanacığımız bir fontfamily değişkenidir*/
+      }/*etiket kapatma*/
+
+      * {
+        box-sizing: border-box; /*SAYFADAKİ BÜTÜN TAGLARİN BOYUTLARININ PADDİNG VE BORDER DAHİL EDİLEREK HESAPLANMASINI SAĞLAR.*/
+        margin: 0; /*SAYFADAKİ BÜTÜN ETİKETLERİN(TAG) DIŞ KENAR BOŞLUKLARINI 0 YAPTIK */
+        padding: 0; /*SAYFADAKİ BÜTÜN ETİKETLERİN(TAG) İÇ KENAR BOŞLUKLARINI 0 YAPTIK */
+      }/*etiket kapatma*/
+      body  /*body tag <body>'i seçmek için açılan css selector'ü dür. bütün altındaki etiketleri etkiler.*/{
+        background: var(--bg); /*arkaplana yukarıda oluşturduğumuz değişken ile renk verdiğimiz attribute*/
+        color: var(--text); /*body altındaki tüm text'lerin renkleri için verdiğimiz attribute */
+        font-family: var(--font-main); /*body altındaki tüm text'lerin font ailesi için verdiğimiz attribute*/
+        padding: 36px 16px; /*tüm etiketlerin kenar için boşlukları için verilir, 36px yukarı aşağı,16px sağ sol*/
+        line-height: 1.5; /*tüm text'lerin boyunu sabitlemek için yazılmış attribute'dır*/
+      }/*etiket kapatma*/
+      .kokpit  /*kokpit sınıfına sahip etiketler için yazılan css selector*/{
+        max-width: 960px; /*maximum genişliği 960px yaptılan attribute*/
+        margin: 0 auto; /*dış kenar boşluklarını 0(yukarı-aşağı) auto(sağ-sol otomatik(boşluğa göre ayarlanıyor)) olarak verilen attribute */
+      }/*etiket kapatma*/
+
+      /* Header & KPI */
+      .header  /*<header> etiketine verdiğimiz stil*/{
+        margin-bottom: 24px; /*alt dış kenara verdiğimiz 24px'lik boşluk*/
+        padding-bottom: 16px; /*alt iç kenara verdiğimiz 24px'lik boşluk*/
+        border-bottom: 1px solid var(--border); /*header'ın alt kenarına verdiğimiz kalınlık düz çizgi,renginide border değişkenine veridğimiz renktir*/
+      }
+      .header__tag  /*header etiketinin altındaki span başlığ'ına verdiğimiz sınıfın stil tag'i*/{
+        font-size: 11px; /*içerisindeki text boyutunu 11px yaptık*/
+        text-transform: uppercase; /*içerisindeki text'lerin hepsini büyük harf'e çevirdik*/
+        letter-spacing: 0.12em; /*içerisindeki text'lerin her bir harf arasındaki boşluğu 0.12rem yaptık. Default olarak tekbir rem = 16px dir html'etiketi altında font-size ile değiştirilebilir.s*/
+        color: var(--clay); /*içerisindeki bütün textl'erin rengi clay adlı değişkenle rengini değiştirdik*/
+        font-weight: 700; /*içerisindeki bütün text'lerin bütün hepsinin kalınlığını 700 px ile kalınlaştırdık 600 ve sonra sı kalınlaşıyor*/
+      }
+      .header__title  /*header etiketi altındaki h1 etiketine verilen sınıfın css selector'ü*/{
+        font-size: 26px; /*text boyutunu 26px yaptık*/
+        font-weight: 700; /*text kalınlığını 700 ile kalınlaştırdık*/
+        margin-top: 2px; /*üst kenar boşluğu olarak 2 px verdik*/
+      }
+
+      .kpi-grid  /*body altındaki section etiketine verdiğimiz sınıfın css selector'ü grid yapısı kullanarak responsive yaptık*/{
+        display: grid; /*etiketin içerisindeki itemler'in davranışını ızgara benzeri yapılara benzetmek için verilen 2 boyutlu(satır sütun) bir display attribute'dir */
+        grid-template-columns: repeat(3, 1fr); /*grid yapısının sütunlarının şablonun'u belirlemek için verdiğimiz özelliktir.her bir sütunda 3'e ayrılıp 1f verilemesini sağlar bu sayede bir her sütünda 3 item bulunması istediğimizi belirtiyoruz*/
+        gap: 14px; /*her bir grid item'in satır ve sütun olarak 14 px boşluk bırakmasını söyledik(margin mantığında çalışır)*/
+        margin-bottom: 24px; /*bu section'a ait class'ın alt dış kenar boşluğu 24px verildi*/
+      }
+      .kpi-card  /*section kpi-grid'in altındaki bütün div kartlarına verdiğimiz class select'örü*/{
+        background: var(--card); /*her bir card'ın arka planına verdiğimiz --card değişkeni renk verdik*/
+        border: 1px solid var(--border); /*her bir card'ın bütün kenarlarına(eğer tek bir değer yzaılırsa 1px gibi bu bütün kenarlara verilir) solid(düz çizgi) olarak 1px lik --border değişkeni ile renk verdik*/
+        border-radius: 8px; /*her bir card için border(kenar çizgisi)'ine 8px radius(yarıçap) vererek daha yuvarlak olmasını sağladık*/
+        padding: 14px 18px; /*üst ve alt 14px sol ve sağ'a 18 px'lik iç kenar boşluğu verdik*/
+      }
+      .kpi-card span  /*her bir card içindeki span etiketinin selector'u*/{
+        font-size: 12px; /*text boyutunuj 12px yaptık*/
+        color: var(--muted); /*text rengini --muted değişkenindeki daha silik bir renk olarak atadık*/
+        font-weight: 600; /*txt kalınlığını orta derecede 600 olarak ayarladık*/
+      }
+      .kpi-card h3  /*her bir card içerisindeki h3 etiketlerini etkileyen css selector'ü*/{
+        font-size: 22px; /*içerisindeki text boyutu 22px yapıldı*/
+        font-weight: 700; /*içerisindeki text kalınlığı 700 ile kalınlaştırdık*/
+        font-family: var(--font-mono); /*text tipin(yazı tipi yazı ailesini) --font-mono'daki "JetBrains Mono", monospace" olarak ayarladık*/
+        margin-top: 4px; /*üst dış kenar boşluğunu 4px yaptık*/
+      }
+
+      /* Layout */
+      .layout  /*main tag'inin sınıfa atadığımız form düzenini grid ile ayarladğımız sınıf selector'üdür*/{
+        display: grid; /*main tag'in deki her bir itemin düzenini ayarlamak için 2 boyutlu grid seçtik*/
+        grid-template-columns: 320px 1fr; /*her bir sütundaki 2 item olduğunu ilk itemin 320px olark sabit olduğunu diğerinmin ise ebeveynden kalan boşluğu doldurmasını istedik*/
+        gap: 24px; /*her bir grid item'in arasında 24 px boşluk bırakmasını istedik*/
+      }
+      @media (max-width: 768px)  /*web sayfasının boyutunun 768 den düşük olma durumnda uygunlanacak stiiler için açılan media query*/{
+        .layout, /*.layout sınıfımızı ve .kpi-grid sınıfımızı seçerek 768 genişliğinden önce stillerimiz vericeğiz  */
+        .kpi-grid  /*.layout sınıfımızı ve .kpi-grid sınıfımızı seçerek 768 genişliğinden önce stillerimiz vericeğiz*/{
+          grid-template-columns: 1fr; /* 768 pixel öncesinde bu iki sınıfın grid sütunlarının ebeveyninden alabileceği bütün genişliği doldurmasınıo istiyoruz*/
+        }
+      }
+
+      /* Form & Panel */
+      .panel  /*form ve listelerimizi gösteren section kısımlarına verdiğimiz sınıfların class selectörü*/{
+        background: var(--card); /*arka plan rengini --card değişkendeki #ffffff olarak verdik*/
+        border: 1px solid var(--border); /*kenarlıkları 1px çizgi ve #e6e5df olarak ayarladık*/
+        border-radius: 10px; /*kenarlıkları 10px yarıçapı vererek biraz daha yuvarlak hale getirdik*/
+        padding: 20px; /*iç kenar boşluklarındaki tüm yönlere 20px verdik*/
+      }
+      .panel h4 /*sadece form içerisindeki h4'ü etkileyen css selector'ü*/{
+        font-size: 15px; /* form içerisindeki  h4 başlığına verdiğimiz 15 px metin boyutu*/
+        font-weight: 700; /* başlığın yazı kalınlığını 700 ile kalın hale getirdik */
+        margin-bottom: 14px; /*bailığın alt dış kenar boşluğunu 14px yaptık*/
+        padding-bottom: 8px; /*başlığın iç alt kenar boşluğunu 8px yaptık*/
+        border-bottom: 1px solid var(--border); /*başlığın alt kenar çizgisini 1px çizgi #e6e5df olarak verdik*/
+      }
+
+      .field  /*form daki her bir input, option, btn kısmını kapsayan sınıfa veridiğimiz class selector'ü*/{
+        margin-bottom: 12px; /*alt dış kenar boşluğunu 12px verdik,diğer elementler ile arasında en kötü 12px boşluk olucakj*/
+      }
+      .field label  /*formdaki her bir input'a verdiğimiz label(etiketi'dir) selector'ü dür.*/{
+        display: block; /*bütün satırı alması için verdiğimiz display özelliği. block bütün sütunu sadece kendisine alır*/
+        font-size: 12px; /*içerisindeki metinlerin boyutunu 12px yaptık*/
+        font-weight: 600; /*içerisindeki metinlerin kalınlığını biraz kalınlaştırdık 600 ile*/
+        margin-bottom: 4px; /*alt dış kenar boşluğu 4px verdik*/
+      }
+      .field input /*formdaki inputları etkileyen selector*/,
+      .field select  /*formdaki option altındaki seçenekleri etkilyen selectör*/{
+        width: 100%; /*alabilecekleri maximum genişliği alabilmelerini sağlar, ebevey'nin yada kendisine tanımlanan max genişlik kadar alırlar*/
+        padding: 8px 10px; /*üst alt a 8px sağ sola 10px iç kenar boşlukları*/
+        font-size: 13px; /*içerisindeki metinleri 13px boyutunda yapar*/
+        font-family: inherit; /*inherit özelliği en yakın ebeveynden font ailesi değerini uygulamamızı sağlar
+        */
+        background: var(--bg); /**/
+        border: 1px solid var(--border); /*kenarlıkları 1px çizgi ve #e6e5df olarak ayarladık*/
+        border-radius: 6px; /*kenarlıklara 6px yarıçapı vererek biraz daha yuvarlak hale getirdik*/
+      }
+      .field input:focus, /*formdaki inputların üzerinde gelince verilecek stiller için verilen selector*/
+      .field select:focus  /*formdaki select seçmelilerin üzerinde gelince verilecek stiller için verilen selector*/{
+        outline: none; /*border'a benzer ama bu elementin kapladığı alana dahil edilmiyor,kesin düz çizgi,border'ın üstünde yazılır, buton ve select üzerine gelince border dışında bir çizgi daha çıkmasın diye none yaptık,default olark bunlar var*/
+        border-color: var(--clay); /*kenarlıkları 1px çizgi ve #c85a32 olarak ayarladık*/
+        background: #fff; /*arka plan renklerinide beyaz yaptık color ile birlikte focus olduğu sıra renkler zıt hale döncek*/
+      }
+
+      .btn-submit  /*formdaki submit butonun select'örüdür*/{
+        width: 100%; /*genişliği ebeveyn yada kendisine tanımlanan genişliğinin tamamını kapsamasını için 100% verdik*/
+        background: var(--clay); /*arka plan rengini #c85a32 yaptık*/
+        color: #fff; /*textlerin rengini beyaz yaptık*/
+        border: none; /*kenar çizgilerini yok ettik*/
+        padding: 10px; /*iç kenar boşluklarına her yönden 10px verdik*/
+        font-size: 13px; /*içerisindeki metinleri 13px boyutunda yapar*/
+        font-weight: 600; /*içerisindeki metinlerin kalınlığını biraz kalınlaştırdık 600 ile*/
+        border-radius: 6px; /*kenarlıklara 6px yarıçapı vererek biraz daha yuvarlak hale getirdik*/
+        cursor: pointer; /*üzerine gelinice fare imlecini el ikonuna dönüştürür*/
+        margin-top: 6px; /*üst dış kenar boşluklarına 6px verdik*/
+      }
+      .btn-submit:hover  /*formdaki submit butonun üzerine gelince  select'örüdür*/{
+        background: var(--clay-hover); /*arka plan rengini --clay-hover değişkeni olarak ayarladık*/
+      }
+
+      /* Liste & Filtre */
+      .filter-bar  /*siparişleri listelemek için girdiğimiz input ve select'in ana kutusu*/{
+        display: flex; /*flex tek boyutlu, içerisindeki itemleri kolayca yatay yada dikey hizalamamıza yarağan özelliktir*/
+        gap: 10px; /*1 boyutlu olarak(yatay yada dikey) flex içerisindeki her bir item'in arasında 10px boşluk bırakmamıza yarar*/
+        margin-bottom: 14px; /*alt dış kenar boşluklarına 14px verdik*/
+      }
+      .order-list  /*dinamik olarak listelenecek her bir order'ı kapsayan büyük ana konteynerın sınıf selector'ü dır*/{
+        display: flex; /*flex tek boyutlu, içerisindeki itemleri kolayca yatay yada dikey hizalamamıza yarağan özelliktir*/
+        flex-direction: column; /*tek satırda bir item olucak şekilde sıralamamızı sağlar*/
+        gap: 10px; /*1 boyutlu olarak(yatay yada dikey) flex içerisindeki her bir item'in arasında 10px boşluk bırakmamıza yarar*/
+      }
+
+      .order-item  /*dinamik olaran listenen her bir order'un kendisini kapsayan kutu*/{
+        background: var(--bg); /*arka plan rengini --bg değişkenindeki değer olarak  ayarladık*/
+        border: 1px solid var(--border); /*kenarlıkları 1px çizgi ve #e6e5df olarak ayarladık*/
+        border-radius: 6px; /*kenarlıklara 6px yarıçapı vererek biraz daha yuvarlak hale getirdik*/
+        padding: 12px 14px; /*iç kenar boşluklarına yukarı aşağıdan 12px sağdan soldan 14px verdik*/
+        display: flex; /*flex tek boyutlu, içerisindeki itemleri kolayca yatay yada dikey hizalamamıza yarağan özelliktir*/
+        justify-content: space-between; /*flex içerisindeki itemlerinin birbileri arasında boşluk bırakmasını sağlar, boyutları ebeveynini boyutu kadar olur toplam*/
+        align-items: center; /*flex'in yönüne bağlı olarak , onun zıttındaki yönde itemlerin nasıl yerleştiriceğimize karar verdik burad yönümüz row dur, bu attribute ise col olarak itemleri pozisyonlarımızı sağlar.*/
+      }
+      .order-item h5  /*dinamik listenenen ürünlerin başlıkları*/{
+        font-size: 13px; /*içerisindeki metinleri 13px boyutunda yapar*/
+        font-weight: 600; /*içerisindeki metinlerin kalınlığını biraz kalınlaştırdık 600 ile*/
+      }
+      .order-item p  /*dinamik listenenen ürünlerin metinlerini kpasyan p elemetinin selector'ü*/{
+        font-size: 12px; /*içerisindeki metinleri 12px boyutunda yapar*/
+        color: var(--muted); /*içerisindeki metinlerin rengini --muted değişkenindeki değer olarak atadık*/
+      }
+
+      .meta-box  /*dinamik listenenen ürünlerin sağ tarafında bulunan etiketleri kapsayan kutumuzdur*/{
+        display: flex; /*flex tek boyutlu, içerisindeki itemleri kolayca yatay yada dikey hizalamamıza yarağan özelliktir*/
+        align-items: center; /*itemleri yatay düzlemde ortaladık*/
+        gap: 10px; /*1 boyutlu olarak(yatay yada dikey) flex içerisindeki her bir item'in arasında 10px boşluk bırakmamıza yarar*/
+      }
+      .badge  /*dinamik listenenen ürünlerin sağ tarafında bulunan kategori armasına verdiğimiz class selector'ü*/{
+        font-size: 11px; /*içerisindeki metinleri 11px boyutunda yapar*/
+        padding: 2px 7px; /*iç kenar boşluklarına yukarı aşağıdan 2px sağdan soldan 7px verdik*/
+        border-radius: 4px; /*kenarlıklara 4px yarıçapı vererek biraz daha yuvarlak hale getirdik*/
+        font-weight: 600; /*içerisindeki metinlerin kalınlığını biraz kalınlaştırdık 600 ile*/
+        background: #fef3c7; /*arka plan rengini ayarladık*/
+        color: #92400e; /*içerisindeki textlere kırmızı rengini verdik default olarak daha sonra sınıf ekleyerek bunlar değiştirilecek*/
+        font-family: var(--font-mono); /*text tipin(yazı tipi yazı ailesini) --font-mono'daki "JetBrains Mono", monospace" olarak ayarladık*/
+      }
+      .badge--mobilya  /*dinamik listedeki her bir order'da bulunan badge'lerin kategorisini belli etmek için badge'lerine özel isimlendirmeler verdik, biride badge--mobilya*/{
+        background: #e0e7ff; /*arka plan rengini ayarladık*/
+        color: #3730a3; /*içerisindeki textlere mavi rengini verdik */
+      }
+      .badge--aydinlatma  /*dinamik listedeki order'ın aydınlatma kategorisindeki badge için oluşturulan sınıf selector'ü*/{
+        background: #fef3c7; /*arka plan rengini ayarladık*/
+        color: #b45309; /*içerisindeki textlere turuncu rengini verdik */
+      }
+      .badge--seramik /*dinamik listedeki order'ın aydınlatma kategorisindeki badge için oluşturulan seramik selector'ü*/{
+        background: #d1fae5; /*arka plan rengini ayarladık*/
+        color: #065f46; /*içerisindeki textlere yeşil rengini verdik */
+      }
+
+      .btn-del  /*dinamik listedeki order'ları silicek olan button'a verdiğimiz sınıf ve selector'ü*/{
+        background: transparent; /*arka plan rengini transpran yani şeffaf göstericek şekilde ayarladık*/
+        border: 1px solid var(--border); /*kenarlıkları 1px çizgi ve #e6e5df olarak ayarladık*/
+        color: var(--muted); /*içerisindeki text'e verdiğimiz renk yukarıda root'a değikeninin değeri var*/
+        font-size: 11px; /*içerisindeki metinleri 11px boyutunda yapar*/
+        padding: 4px 8px; /*iç kenar boşluklarına yukarı aşağıdan 4px sağdan soldan 8px verdik*/
+        border-radius: 4px; /*kenarlıklara 4px yarıçapı vererek biraz daha yuvarlak hale getirdik*/
+        cursor: pointer; /*üzerine gelinice fare imlecini el ikonuna dönüştürür*/
+      }
+      .btn-del:hover  /*dinamik listedeki order'ları silicek olan button'un hover(üzerinde durma) durumunda verdiğimiz selector*/{
+        background: #ef4444; /*arka plan rengini ayarladık*/
+        color: #fff; /*içerisindeki text'e verdiğimiz beyaz renk*/
+        border-color: #ef4444; /*bu butona verdiğimiz kenarlık rengi*/
+      }
+      #categoryFilter/*formdaki categori seçeneklerinin başında olan select selectörü*/{
+        width: 130px;/*genişliği sabit 130px*/; 
+        font-size: 12px;/* metin boyutlarını 12px yaptık*/;
+        padding: 6px;/*iç kenar boşluklarının bütün taraflarına 6px boşluk verdik*/
+      }
+      #searchInput /*ürün listesindeki filtreleme için kullanıdığımız input id'si selectörü*/{
+        margin-bottom: 0; /*alt dış kenar boşluğunu 0 yaptık*/
+      }
+      .orderContainer/*Listelenen her bir şiparişi kapsayan ana kutu */{
+       padding:24px;  /*iç kenar boşluklarının bütün taraflarına 24px boşluk verdik*/
+       text-align:center; /*içerisindeki metinleri yatay olarak ortaladık*/
+       color:var(--muted); /*içerisindeki text'e verdiğimiz renk yukarıda root'a değikeninin değeri var*/
+       font-size:12px; /*içerisindeki metinlerin boyutunu 12px yaptık*/
+      }
+    </style><!-- /*body etiketi içindeki bütün tag elementlerimizi stil vereceğimiz tag'ın sonudur -->
+  </head><!--ARKA PLAN VE TEKNİK BİLGİLERİN OLDUĞU BÖLÜMÜN KAPANIŞ ETİKETİDİR. -->
+  <body><!-- SAYFAMIZDA GÖZÜKCEK OLAN BÜTÜN ELEMENT LERİN BULUNDUĞU ANA ETİKET BAŞLANGICIDIR -->
+    <div class="kokpit"><!-- Bütün sayfayı body den sonra kaplayan ana div ve verdiğimiz kokpit class ismi -->
+      <header class="header"> <!--Sayfanın ana başlığı, header etiketi ve header class'ı verdik -->
+        <span class="header__tag"> Sipariş Takip </span> <!-- header içindeki kısa metnimizi span olarak ayarladık ve stil eklemek için header--tag verdik bem kuralları gereği -->
+        <h1 class="header__title">Sipariş Yönetim Kokpiti</h1> <!-- header içindeki ana h1 başlığımız seoda bu gözükür-->
+      </header>
+      <section class="kpi-grid"> <!-- sayfamızdaki ürünle ilgili temel performans gösteren ana grid yapılı div'imiz  -->
+        <div class="kpi-card"> <!-- bu kpi-grid içerisindeki her bir item için verdiğimiz item'ı kapsayan div  -->
+          <span>Kayıtlı Sipariş</span> <!-- bu her bir kpi-card içerisinde yazılacak metinin span etiketi -->
+          <h3 id="kpiCount">0</h3> <!-- kpi-card içerisinde dinamik olarak text'i değeşecek h3 etiketlerimiz -->
+        </div> <!-- kpi-card div'inin kapanış tagi -->
+        <div class="kpi-card"> <!-- diğer kpi-card'lı div'lerimiz -->
+          <span>Toplam Sipariş Tutarı: </span> <!-- bu her bir kpi-card içerisinde yazılacak metinin span etiketi -->
+          <h3 id="kpiTotal">0 ₺</h3> <!-- kpi-card içerisinde dinamik olarak text'i değeşecek h3 etiketlerimiz -->
+        </div> <!-- kpi-card div'inin kapanış tagi -->
+        <div class="kpi-card"><!-- diğer kpi-card'lı div'lerimiz -->
+          <span>Ortalama Ürün Fiyatı</span> <!-- bu her bir kpi-card içerisinde yazılacak metinin span etiketi -->
+          <h3 id="kpiAvg">0 ₺</h3> <!-- kpi-card içerisinde dinamik olarak text'i değeşecek h3 etiketlerimiz -->
+        </div> <!-- kpi-card div'inin kapanış tagi -->
+      </section> <!-- sayfamızdaki ürünle ilgili temel performans gösteren ana grid yapılı div'imizin kapanış tagi -->
+      <main class="layout"> <!-- Sayfada ürün ekleme listeleme ve silme gibi bütün işlevleri yapacak olan etiketleri kapsayan layout class name'li main etiketi-->
+        <section class="panel"> <!-- sayfada siparişleri eklememize yarayan formu kapsayan panel sınıflı section etiketi  -->
+          <h4>Yeni Sipariş Kaydı</h4><!-- sipariş eklenen formun hemen tepesinde bulunan h4 başlıklı etiket -->
+          <form id="orderForm"> <!-- sipariş eklememize yaran form etiketi bunun içerisinde gerekli bilgiler ile sipariş edeceğiz orderForm class ismini verdik -->
+            <div class="field"> <!-- sipariş eklenilen kısımda sipariş input'unu kapsayan field class isimli div etiketi-->
+              <label for="prodName">Ürün Adı: </label> <!-- siparişin isminin alındığı input'un ne olduğunu anlatan input id ile aynı for attribute'a sahip label aynı olmak zorunda yoksa label bu input'u göstermez -->
+              <input type="text" id="prodName" placeholder="Sehpa" required /> <!-- sipariş ismini alındığı text inputu id'si prodName henüz birşey yazılmadığında sehpsa yazıcak ve doldurlması zorunlu olan input -->
+            </div><!-- field div'inin kapanış etiketi -->
+            <div class="field"><!-- siparişin kategorisinin belirlendiği kısmı kapsayan div class ismide field -->
+              <label for="prodCat">Kategori</label> <!-- select'i etiketlemek için oluşturduğumuz label, içerisinde label'i açıklayan metin ve for'u id'sine eşitledik-->
+              <select name="prodCat" id="prodCat"><!-- sipariş kategorisini seçmek için açılan select id'yede prodCat verdik -->
+                <option value="Mobilya">Mobilya</option> <!-- bu seçme yerinin altındaki seçeneklerden biri Mobilya verdik değerinide mobilya olarak kaydettik -->
+                <option value="Aydınlatma">Aydınlatma</option><!-- bu seçme yerinin altındaki seçeneklerden biri Aydınlatma verdik değerinide Aydınlatma olarak kaydettik -->
+                <option value="Mutfak">Mutfak</option><!-- bu seçme yerinin altındaki seçeneklerden biri Mutfak verdik değerinide Mutfak olarak kaydettik -->
+              </select> <!-- select etiketinin kapanışı -->
+            </div><!-- field div'inin kapanış etiketi -->
+            <div class="field"><!-- siparişin fiyat bilgilerini girdiğimiz bölümü kapsyana div field class isimli -->
+              <label for="prodPrice">Fiyat</label> <!-- fiyat inputunun belirtmek için kullandığımız label -->
+              <input
+                type="number"
+                id="prodPrice"
+                value="3250"
+                min="100"
+                step="50"
+                required
+              /> <!-- sipariş fiyatlarını girdiğimiz input tipi numara id'si prodPrice varsayılan değeri 3250 , minimum girilebilecek değer 100 her bir değer artışı ise 50 nin katlarında olmalıdır yani girilen fiyatta -->
+            </div><!-- field div'inin kapanış etiketi -->
+            <button type="submit" class="btn-submit">Siparişi Kaydet</button> <!-- siparişi kaydettiğimiz tipi submit olan btn-submit class isimli butonumuz -->
+          </form><!-- sipariş ekleme formunun kapanış tagi -->
+        </section><!-- section panel'inin kapanış tagi -->
+        <section class="panel"> <!-- sayfada siparişleri dinamik olarak listeleyen, silen  kısmı kapsayan panel sınıfisimli section-->
+          <div class="filter-bar"> <!-- dinamik olarak eklenen siparişleri filtrelemek için bilgiler gireceğimiz alanı kapsayan filter-bar isimli div -->
+            <input
+              type="text"
+              id="searchInput"
+              class="field"
+              placeholder="Ürün Adına Göre Filtrele"
+            /> <!-- siparişleri girilen metne göre listelemek için açtığımız input tag'i class ismi field yerine yazı yazılmadan önce yazılacak ürün adına göre filtrele kelimesi, ve text tipinde-->
+            <select
+              id="categoryFilter"
+            > <!-- siparişleri kategorisel olarak listlemek için açtığımız seçim kutumuz select tag'li -->
+              <option value="ALL">Tüm Kategoriler</option> <!-- ürünlerin bütün kategorisini belirten seçim kutusu seçeneği -->
+              <option value="Mobilya">Mobilya</option><!-- ürünlerin mobilya kategorisini belirten seçim kutusu seçeneği -->
+              <option value="Aydınlatma">Aydınlatma</option><!-- ürünlerin aydıntlatma kategorisini belirten seçim kutusu seçeneği -->
+              <option value="Mutfak">Mutfak</option><!-- ürünlerin mutfak kategorisini belirten seçim kutusu seçeneği -->
+            </select> <!-- categoryFilter id'li select'in kapanış tag'i -->
+          </div> <!-- filter bar isimli divin kapanış tagi -->
+          <div id="orderContainer" class="order-list"> <!-- dinamik olarak eklenecek siparişi kapsayan sınıf -->
+            <!--Dinamik olarak elemanlar buraya basılacak/eklenecek-->
+          </div> <!-- orderl-list class isimli divin kapanış tag'i -->
+        </section><!-- section panel'inin kapanış tagi -->
+      </main> <!-- layout main'inin kapanış tag'i  --> 
+      <script> /*HTML İÇİNDEKİ JAVASCRİPT KODLARINI İÇERİSİNE YAZDIĞIMIZ ETİKTEİN BAŞLANGICIDIR. 
+      HTML DOSYASINDA JAVASCRİPT KODLARIMIZI ÇALIŞTIRMAK İSTERSEK BU TAG İÇERİSİNDE YAZMAMIZ GEREKİR.*/
+        let orders = [
+          { id: 1, name: "Sehpa", category: "Mobilya", price: 6500 },
+          { id: 2, name: "Abajür", category: "Aydınlatma", price: 7500 },
+          { id: 3, name: "Koltuk", category: "Mobilya", price: 8500 },
+          { id: 4, name: "Bulaşık Makinası", category: "Mutfak", price: 10000 },
+          { id: 5, name: "Ocak", category: "Mutfak", price: 15000 },
+        ];//eklenecek ürünlerin hem şablon olarak nasıl olacağı hemde varsayılan olarak vereceğimiz değerleri bulunduran orders array'ı
+        //dom elementleri toplayalım
+        const orderContainer = document.getElementById("orderContainer");//dinamik listelerin hepsini tutan ana konteyner class ismiylen çağırdık
+        const orderForm = document.getElementById("orderForm");//sipariş ekleme değerlerini almak için form tag'inin classı kullandık 
+        const searchInput = document.getElementById("searchInput");//ürünleri yazarak listelemek için kullandığımız input'un sınıfı ile aldık
+        const categoryFilter = document.getElementById("categoryFilter");//ürünleri kategori bazlı listelemek için oluşturduğumuz select'in sınıfı ile çağırdık
+        const kpiCount = document.getElementById("kpiCount");//temel göstergelerimizden listenenen siparişlerimizin toplam sayısını gösteren h3 etiketinin sınıfı ile çağırdık
+        const kpiTotal = document.getElementById("kpiTotal");//temel göstergelerimizden listenenen siparişlerimizin fiyatını toplam gösteren h3 etiketinin sınıfı ile çağırdık
+        const kpiAvg = document.getElementById("kpiAvg");//temel göstergelerimizden listenenen siparişlerimizin toplam fiyatının ortalamasını gösteren h3 etiketinin sınıfı ile çağırdık
+        const updateKPIs = (dataList) => { //kpi değerlerimiz güncellemek için oluşturduğumuz class bunu listeye veri eklenip silince tekrar tekrar çağıracağız, dataList ise bizim yeni güncellenip gelen orders array'ımız olucak
+          kpiCount.textContent = dataList.length;//gelen verinin boyutunu baz alarak sipariş adetini bulup, bunu kpiCount'ın metin içeriği olarak değer ataması yapıyoruz
+
+          if (dataList.length === 0) {//dataList'imiz içerisinde eleman varmı kontrol edioyruz if ile
+            kpiTotal.textContent = "0 ₺"; //EĞER Boş ise kpi göstergemizden fiyat totali yazan kpiTotal'in içerisindeki metin'i güncelliyoruz
+            kpiAvg.textContent = "0 ₺"; //EĞER Boş ise kpi göstergemizden fiyat ortalamasını yazan kpiAvg'in içerisindeki metin'i güncelliyoruz
+            return;//dataList'te eleman yoksa yukarıdaki işlemleri tamamlayıp sonra burada erkenden fonksiyonu bitiriyoruz
+          }
+          const total = dataList.reduce((acc, curr) => acc + curr.price, 0);//dataList üzerindeki tüm price attribute'ları reduce ile topluyor sonra bu toplamı total'e yazdırıyoruz. reduce bize burda number döndürüyor
+          kpiTotal.textContent = `${total.toLocaleString("tr-TR")} ₺`;//burda ise number olan total'i tr'ye lokalize ederek stirng haline getirip kpiTotal metnini güncelliyoruz.
+
+          const avg = total / dataList.length;// avg değerini bulmak için total ile dataListimizdeki eleman boyutunu böşiyoruz ortlama = totalsayı / elemensayısı , daha sonra bu sayıyıda avg değerini atıyoruz
+          kpiAvg.textContent = `${Math.round(avg).toLocaleString("tr-TR")} ₺`;//bulduğumuz avg değerini math.round ile yuvarlayıp tr'ye lokalleşicek şekilde string'e dönüştürüp kpiAvg metnini güncelliyoruz 
+        };//updateKPIs fonksiyonun kapanışı
+
+        //filtreleme bölümü (dinamik dom/ render motoru)
+        const renderOrders = () => { //dinamik olarak siparişlerimizi listelediğimiz kısım yazarak arama veya kategori seçim kutusundan seçerek arama durumlarında, ürün ekleme, çıkarma durumlarında çağıracağımız siparişleri dinamik olarak dom oluşturan listeyelen büyük fonksiyonumuz
+          const term = searchInput.value.toLowerCase().trim();//arama input'umuzun içine yazılan değerleri ilk olarak küçük harflere dönüştürüp boşlukları silip term değişkenine atıyoruz
+          const selectedCat = categoryFilter.value;//ürün aramadaki, kategori seçme kutumuzda seçilen değeri alıyoruz
+
+          //filtreleme bölümü
+          const filtered = orders.filter((order) => {//arama filteresi yapıcak fonksiyonun açılışı, bu fonksiyon orders arayımızda filter fonksiyonu ile arama kelimelerini ve arama kategorimizin değerlerini bulmaya çalışacaktır. 
+            const matchesName = order.name.toLowerCase().includes(term);//burda orders içerisinde her bir order(yani orders elemanı) dönerken, order'ın name attribute'ını kısa karakterlere çevirip arama input'u içerisine yazılan kelimemiz ile eşleşiyormu ona bakıyoruz
+            const mathesCategory = selectedCat === "ALL" || order.category === selectedCat; //burdada orders içerisinde her bir order(orders elemanı)' ın kategorsine bakıyoruz, arama select'indeki categori seçimimiz order'ın category attribute'ı ile eşitmi yada arama select'inde bütün ALL kategorisi mi seçilmiş
+            return matchesName && mathesCategory;//burdada arama input'u ve kategori seçim kutusundaki değerlerimizin orders array'ında eşleşip eşleşmediğine bakıyoruz ona göre bu callback fonksiyonu true olan değerleri alır yani eşleşen değerleri olan dizi döndürür
+          });
+
+          orderContainer.innerHTML = "";//siparişleri listeleceğimiz ana listenin iç innerHTML'isin ilk olarak sıfırlıyoruz.
+
+          if (filtered.length === 0) {//filtrelenmiş dizimiz boşmu ona bakıyoruz, ğer boş ise stil verdiğmiz div ile aradığınız kriterler bulunamadı yazısı yazdırıyoruz, kpı'ları boş bir array yolluyarak değerlerini sıfırlayıp fonksiyondan erkenden çıkıyoruz
+            orderContainer.innerHTML = `
+            <div style="padding:24px; text-align:center; color:var(--muted); font-size:12px">
+            Kriterlere Uygun Ürün Bulunamadı
+            </div>
+            `;// burada eğer filtre array'ı boş olduğunda div'e stil verip içerisindeki textContent'ine mesajımızı yazıyoruz,ve sipariş listesini gösteren orderContainer'ın innerHTML olarak değerini atıyoruz.
+            updateKPIs([]);//kpi değerlerimizi sıfırlamak için boş bir dizi ile yolluyoruz
+            return;//boş bir değer döndürerek fonksiyondan çıkıyoruz
+          }
+
+          //dinamik element üretim
+
+          filtered.forEach((order) => {//burda ise filtrelenmiş siparişlerimizin içerisinde döngü yaparak her bir döngüde sipariş elemanlarını gösterecek şekilde html leri ni verip css için class id'lerini hazırlayıp, siparişlerin listesinin ana konteynır'ı olan orderContainer'ı ekleyip, bu filtrelenmiş verilerin kpi değerleri yazdırması içinde updateKPI(filtered) ile çağırıyoruz. Açıkcası her döngüde tekrar tekrar aynı tüm liste yollanıyor bir kere yeterli olması lazım updateKPIs forEach dışında olmalı(veri seti büyük olursa sıkıntı).
+            const item = document.createElement("article");//burda neden div değilde article var anlamadım. filtrelenmiş her bir siparişi kapsayacak article elementi oluşturuyoruz. ilerde siparişleri silmek için data-id verip butonla bu data-id'deki değeri alıp o orders'taki o değere sahip id'nin index'ini orders'tan ve bu article'ı silip kaldıracağız hem veride kalkmış, hemde tasarım olarak kalkmış olucak.
+            item.className = "order-item"//bu her bir sipariş için oluşturulan article'a class ismi atıyoruz
+            item.setAttribute("data-id", order.id);//daha sonra buton ile silme işlemi yapabilmek için orders'ta hangi index'e sahip onun bilgesini verdiğimiz, data-id attribute'isi atıyoruz
+            const badgeClass = //her bir sipariş kategorisini gösteren rozet'in sınıfismini o siparişin kategorisi olarak atıyoruzki css'imizde yaptığımız ayarlamalar etkili olup kategoriye göre rozet'i stillesin
+              order.category === "Mobilya" //eğer gelen sipariş mobilya ise sınıfa badge--mobilya atıyoruz
+                ? "badge--mobilya"
+                : order.category === "Aydınlatma" //eğer gelen sipariş Aydınlatma ise sınıfa badge--aydinlatma atıyoruz değilse badge--seramik atıyoruz en sona o kalıyor
+                  ? "badge--aydinlatma"
+                  : "badge--seramik";
+
+            item.innerHTML = `
+                <div>
+                <h5>${order.name}</h5>
+                <p>Birim Fiyat: ${order.price.toLocaleString("tr-TR")} ₺</p>
+                </div>
+                <div class="meta-box">
+                <span class="badge ${badgeClass}">${order.category}</span>
+                <button class="btn-del"
+                data-action="delete">Sil</button>
+                </div>
+                `;//hepsini bir arada yazıyom. burda siparişi kapsayan article'ın innerHTML'ine siparişin; ismi,fiyatı(tr'ye çevrilmiş string olarak),kategorisi bilgilerini alarak dinamik dom ile tasarım da göstermek için dinamik html kodlarımızı yazıyoruz,h5 için div ve textine sipariş ismini veriyor , fiyatını yazdırıyoruz. Diğer div ilede rozet ve siparişi silme butonlarımızı ekliyoruz. kategori rozetimiz içinde onun kategorieye göre etki edecek css'i için class'ını , ve hangi kategori ise onu yazdıracak text içeriğini veriyoruz
+            orderContainer.appendChild(item);//bu dinamik oluşturulan dom'uda bütün siparişleri kapsayan orderContainer'ın en son çocuğu olarak atıyoruz, her gelen item bizim css özelliklerimize görede alt a doğru uzasın diye
+            updateKPIs(filtered);//filtrelenmiş verilerin kpı değerlerini hesaplayıp tasarımda güncellemesi için updateKPIs(filtered)'ı çağırıyoruz'
+          });//forEach ve callback fonksiyonun kapanış parantezleri.
+        };//dinamik renderlayan renderOrders fonksiyonun kapanış tag'i
+        searchInput.addEventListener("input", renderOrders);//arama input'umuzun değerlerini input'a yazıldığında almak için addEventListener("input") yapıyoruz, siparişlerin renderlanması için de callback function olarakta renderOrders fonksiyonumuzu veriyor. yani inputa bir girdi olduğunda renderOrders çalışıp dinamik olarak html renderlayıp bizim sayfa tasarımımızı güncelleyecek
+        categoryFilter.addEventListener("change", renderOrders);//arama kategori seçim kutumuzun değerlerinde birdeğişim olduğunda siparişleri listelememiz için bir addeventlistener("change") etkinlik dinleyicisi atıyoruz, siparişlerin renderlanması için de callback function olarakta renderOrders fonksiyonumuzu veriyoruz. seçim kutusunda bir seçenek seçildiğinde  renderOrders çalışıp dinamik olarak html renderlayıp bizim sayfa tasarımımızı güncelleyecek
+        renderOrders();//en sondada sayfa ilk açılışta herhangi bir değişklik olmadan bizim siparişlerimizi tasarım olarak render larması getirmesi için renderOrders() fonksiyonunu çağırıyoruz
+      </script><!-- js kodlarımızı yazdığpımız script kod bloğunun kapanışı -->
+    </div> <!-- kokpit class'lı div etiketinin kapanışı -->
+  </body> <!-- body etiketinin kapanışı -->
+</html><!-- html tag'inin kapanışı -->
