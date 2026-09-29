@@ -56,7 +56,7 @@ void main() {
 
   //başarılı tahsis
   try {
-    podKaynagiTahsisEt("ingress-controller", 15.0, 40.0);
+    podKaynagiTahsisEt("ingress-controller", 55.0, 40.0);
   } catch (e) {
     print("Hata: $e");
   }
