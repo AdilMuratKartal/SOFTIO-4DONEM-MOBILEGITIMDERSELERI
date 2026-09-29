@@ -11,6 +11,10 @@ class UserManager{
     }
 }
 
+class User{
+  
+}
+
 
 //SRP UYUMLU KODLAR
 class UserValidator{bool isValid(String email,String password)=>true;}
