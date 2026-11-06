@@ -1,0 +1,5 @@
+# Root Gitignore
+**/fcm_web_config.dart
+**/firebase-messaging-sw.js
+**/firebase_options.dart
+*.env

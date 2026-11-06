@@ -72,3 +72,10 @@ firebase_options.dart
 
 # firebase json
 firebase.json
+
+# FCM Web VAPID Key config (hassas anahtar, git'e gönderilmez)
+lib/constants/fcm_web_config.dart
+**/fcm_web_config.dart
+
+#web
+web/firebase-messaging-sw.js

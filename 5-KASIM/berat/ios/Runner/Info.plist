@@ -68,6 +68,8 @@
 	</array>
 
 	<!-- Permissions -->
+	<key>FirebaseMessagingInstallationIdEnabled</key>
+	<true/>
     <!-- Kamera İzni -->
     <key>NSCameraUsageDescription</key>
     <string>Profil fotoğrafı çekebilmeniz için kameranıza erişmemiz gerekiyor.</string>
